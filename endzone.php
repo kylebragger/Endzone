@@ -35,12 +35,21 @@
 /**
 * Endzone - Timezone happiness for CodeIgniter
 *
+* Usage:
+* - Somewhere globally, set $this->endzone->current_zone to whatever local timezone you want to work with (e.g
+*   the current user's timezone)
+* - Instead of the Date helper gmt_to_local() function, use $this->endzone->gmt_to_local()
+* - ___________
+* - Profit
+*
 * Note that you must set the time_reference config to 'gmt' for maximum win.
 *
 * @author Kyle Bragger <kyle@forrst.com>
 * @package CodeIgniter
 * @subpackage Endzone
 * @since July 30, 2010
+*
+* @todo Make everything but gmt_to_local() private?
 *
 */
 
@@ -55,7 +64,10 @@ class Endzone {
     {
         $this->_ci =& get_instance();
         
-        if ($this->_ci->config->item('time_reference') != 'gmt') die('Endzone: Please set the CodeIgniter time_reference config to gmt');
+        if ($this->_ci->config->item('time_reference') != 'gmt')
+        {
+            die('Endzone: Please set the CodeIgniter time_reference config to gmt');
+        }
         
         $this->_ci->load->helper('date');
     }
@@ -66,6 +78,7 @@ class Endzone {
     * Takes a GMT timestamp and converts into a timestamp in the current timezone
     *
     * @param int $time a timestamp; defaults to now()
+    * @return int timestamp converted to the current zone
     *
     */
     public function gmt_to_local($time = null)
@@ -82,6 +95,8 @@ class Endzone {
     * in_dst()
     *
     * Is the current timezone currently in DST?
+    *
+    * @return bool
     *
     * Thoughts:
     * - $time = now() -> is that correct? should the time comparison be done locally?
@@ -105,6 +120,8 @@ class Endzone {
     *
     * Does the current timezone support DST?
     *
+    * @return bool
+    *
     * Tip o' the hat: http://stackoverflow.com/questions/1586552/kittens/1586628#1586628
     *
     */
@@ -120,6 +137,8 @@ class Endzone {
     * _ci_to_php_zone()
     *
     * Converts a CI timezone ($zone) to a PHP timezone identifier
+    *
+    * @return string PHP timezone identifier
     *
     * Thoughts:
     * - timezone_name_from_abbr() needs false for param 3 always? should that be the value of dst_supported()?
