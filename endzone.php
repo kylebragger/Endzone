@@ -38,6 +38,7 @@
 * Usage:
 * - Somewhere globally, set $this->endzone->current_zone to whatever local timezone you want to work with (e.g
 *   the current user's timezone)
+* - You probably should call date_default_timezone_set('GMT') in index.php or something
 * - Instead of the Date helper gmt_to_local() function, use $this->endzone->gmt_to_local()
 * - ___________
 * - Profit
