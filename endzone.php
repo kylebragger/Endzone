@@ -150,6 +150,12 @@ class Endzone {
         if ($zone === null) $zone = $this->current_zone;
         
         $offset = timezones($zone);
-        return timezone_name_from_abbr('', $offset * 3600, false);
+        $php_zone = timezone_name_from_abbr('', $offset * 3600, -1);
+        if ($php_zone === false)
+        {
+            // might be in DST
+            $php_zone = timezone_name_from_abbr('', ($offset * 3600) + 3600, true);
+        }
+        return $php_zone;
     }
 }
